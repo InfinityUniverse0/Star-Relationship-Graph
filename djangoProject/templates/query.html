@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>查询</title>
+
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background-color: #f5f5f5;
+        }
+
+        h3 {
+            text-align: center;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            margin-top: 50px;
+        }
+
+        form input[type="text"],
+        form button[type="submit"] {
+            margin-bottom: 10px;
+        }
+
+        table {
+            margin-top: 20px;
+            border-collapse: collapse;
+            width: 100%;
+        }
+
+        th,
+        td {
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .description-cell {
+            max-height: 100px;
+            overflow: auto;
+        }
+    </style>
+</head>
+
+<body>
+    {% load filters %}
+    <h3>查询人物信息</h3>
+    <form action="/query" method="POST">
+        <p>
+            人物姓名：
+            <input type="text" name="name" />
+        </p>
+        <button type="submit">查询</button>
+        <a href="/query_all_persons" class="button">查询所有人物信息</a>
+    </form>
+
+    <!--显示查询到的人物详细信息-->
+    <table>
+        <tr>
+            <th>姓名</th>
+            <th>性别</th>
+            <th>出生日期</th>
+            <th>国籍</th>
+            <th>职业</th>
+            <th>个人介绍</th>
+            <th>代表作</th>
+            <th>好友</th>
+            <th>旧爱</th>
+            <th>绯闻</th>
+            <th>前任</th>
+            <th>现任</th>
+            <th>亲属</th>
+        </tr>
+        {% for person in persons %}
+        <tr>
+            <td>{{ person.name }}</td>
+            <td>{{ person.gender }}</td>
+            <td>{{ person.birth_date }}</td>
+            <td>{{ person.nationality }}</td>
+            <td>{{ person|get_person_info:'occupation' }}</td>
+            <td class="description-cell">{{ person.description }}</td>
+            <td>{{ person|get_person_info:'famous_work' }}</td>
+            <td>{{ person|get_person_info:'friends' }}</td>
+            <td>{{ person|get_person_info:'old_lover' }}</td>
+            <td>{{ person|get_person_info:'gossip' }}</td>
+            <td>{{ person|get_person_info:'divorced' }}</td>
+            <td>{{ person|get_person_info:'lover' }}</td>
+            <td>{{ person|get_person_info:'relatives' }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+</body>
+
+</html>
